@@ -47,31 +47,6 @@ export async function POST(request: NextRequest) {
             hadSignatureHeader: Boolean(signature),
             bodyLength: rawBody.length,
             bodyPreview: rawBody.slice(0, 200),
-            // TEMPORARY diagnostic: the received signature and the exact bytes
-            // it was computed over, so the signing secret can be identified
-            // offline. Revert once the mismatch is resolved.
-            debugSignature: signature,
-            debugBody: rawBody,
-            debugSecretsPresent: {
-              facebook: Boolean(process.env.FACEBOOK_APP_SECRET),
-              instagram: Boolean(process.env.INSTAGRAM_APP_SECRET),
-              facebookLength: (process.env.FACEBOOK_APP_SECRET ?? "").length,
-              instagramLength: (process.env.INSTAGRAM_APP_SECRET ?? "").length,
-            },
-            // Lengths only — never the values. Confirms which vars arrived
-            // intact without exposing any secret in the database.
-            debugEnvLengths: Object.fromEntries(
-              [
-                "ENCRYPTION_KEY",
-                "NEXTAUTH_SECRET",
-                "NEXTAUTH_URL",
-                "CRON_SECRET",
-                "WEBHOOK_VERIFY_TOKEN",
-                "INSTAGRAM_APP_ID",
-                "DATABASE_URL",
-                "REDIS_URL",
-              ].map((name) => [name, (process.env[name] ?? "").length])
-            ),
           },
         },
       })
