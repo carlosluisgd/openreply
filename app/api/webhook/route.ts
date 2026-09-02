@@ -58,6 +58,20 @@ export async function POST(request: NextRequest) {
               facebookLength: (process.env.FACEBOOK_APP_SECRET ?? "").length,
               instagramLength: (process.env.INSTAGRAM_APP_SECRET ?? "").length,
             },
+            // Lengths only — never the values. Confirms which vars arrived
+            // intact without exposing any secret in the database.
+            debugEnvLengths: Object.fromEntries(
+              [
+                "ENCRYPTION_KEY",
+                "NEXTAUTH_SECRET",
+                "NEXTAUTH_URL",
+                "CRON_SECRET",
+                "WEBHOOK_VERIFY_TOKEN",
+                "INSTAGRAM_APP_ID",
+                "DATABASE_URL",
+                "REDIS_URL",
+              ].map((name) => [name, (process.env[name] ?? "").length])
+            ),
           },
         },
       })
